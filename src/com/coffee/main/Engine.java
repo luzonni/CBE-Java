@@ -63,8 +63,6 @@ public class Engine implements Runnable {
 	public static Random RAND;
 	public static Transition transition;
 	
-	//teste
-	
 	public final static Color[][] PALLET = {
 				{new Color(180, 180, 180), new Color(80, 80, 80), new Color(0, 0, 0)},
 				{new Color(233, 212, 165), new Color(127, 121, 99), new Color(26, 23, 18)},
