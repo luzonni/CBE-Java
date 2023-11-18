@@ -1,0 +1,28 @@
+TODO
+1. Objetivo:
+	O jogador terá que desenvolver formas de passar por cada nivel.
+	Seus desafios serão:
+		Portas trancadas;
+		Objetos mortais;
+		Inimigos;
+		Tiles falsos;
+
+2. Mapa:
+	Todos os levels serão desenhados e pensados singularmente;
+	Você pode escolher objetos do cenario para interagir, dependendo de seu tipo.
+	
+	
+3. Desafios:
+
+4. Personagens:
+	Pluuter:
+		Anda na direção do personagem em busca de ficar na sua frente para cuspir
+	Karto:
+		Anda pelas paredes e solta gosma pelo chão;
+	Skull: 
+		Anda em posições que pião;
+	Worm:
+		Sai da parede até outra parede deixando o rastro mortal do seu corpo;
+		
+	
+Agora foi ;)
