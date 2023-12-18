@@ -221,7 +221,7 @@ public class Creator implements Activity {
 			return;
 		int w = Integer.parseInt(string_w);
 		int h = Integer.parseInt(string_h);
-		if(w < 3 || h < 3 || NAME == "")
+		if(w < 3 || h < 3 || NAME == "" || w > 48 || h > 48)
 			return;
 		if(UserInterface.getButtons().get("next").function()) {
 			UserInterface.getButtons().remove("next");

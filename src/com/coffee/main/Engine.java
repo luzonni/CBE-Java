@@ -94,8 +94,8 @@ public class Engine implements Runnable {
 	}
 
 	public synchronized void Start() {
-		WINDOW = new Window(GameTag + " / The Universe");
 		SET_PALLET();
+		WINDOW = new Window(GameTag + " / The Universe");
 		UI = new UserInterface();
 		setActivity(new Menu());
 		ACTIVITY_RUNNING = true;
