@@ -91,8 +91,6 @@ public class Game implements Activity, Receiver {
 	}
 	
 	public void tick() {
-		System.out.println(getLevel().getEntities().size());
-		System.out.println(getLevel().getMap().length);
 		if(UserInterface.getButtons().get("restart").function()) {
 			Game.restart();
 		}
@@ -180,6 +178,7 @@ public class Game implements Activity, Receiver {
 	public void dispose() {
 		this.level.selected = null;
 		this.camera.stop();
+		this.level.dispose();
 		UserInterface.clearViews();
 		UserInterface.getButtons().remove("restart");
 	}

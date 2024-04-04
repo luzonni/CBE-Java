@@ -96,6 +96,8 @@ public abstract class Objects implements Receiver {
 	
 	public abstract void render(Graphics2D g);
 	
+	public abstract void dispose();
+	
 	public Rectangle getBounds() {
 		return new Rectangle((int)getX(), (int)getY(), getWidth(), getHeight());
 	}

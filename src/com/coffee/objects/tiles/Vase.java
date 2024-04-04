@@ -46,5 +46,10 @@ public class Vase extends Tile {
 		renderTile(Floor.sprite[Floor.index], g);
 		renderTile(getSprite(), g);
 	}
+	
+	@Override
+	public void dispose() {
+		sprite = null;
+	}
 
 }

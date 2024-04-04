@@ -40,5 +40,10 @@ public class Berne extends Entity {
 	public void render(Graphics2D g) {
 		renderEntity(sprite[indexAnim], g);
 	}
+	
+	@Override
+	public void dispose() {
+		sprite = null;
+	}
 
 }

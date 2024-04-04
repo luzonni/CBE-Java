@@ -23,4 +23,9 @@ public class Wall extends Tile {
 		return sprite[index];
 	}
 	
+	@Override
+	public void dispose() {
+		sprite = null;
+	}
+	
 }

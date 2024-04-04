@@ -65,5 +65,10 @@ public class Miniboll extends Entity {
 		g.setColor((count % 2 == 0) ? Engine.Color_Primary : Engine.Color_Tertiary);
 		g.fillRect((int)getX() - Game.getCam().getX(), (int)getY() - Game.getCam().getY(), getWidth(), getHeight());
 	}
+	
+	@Override
+	public void dispose() {
+		
+	}
 
 }

@@ -18,6 +18,7 @@ import com.coffee.graphics.SpriteSheet;
 import com.coffee.main.Engine;
 import com.coffee.main.Geometry;
 import com.coffee.main.tools.Responsive;
+import com.coffee.objects.Objects;
 import com.coffee.objects.entity.Entity;
 import com.coffee.objects.tiles.Tile;
 import com.coffee.ui.UserInterface;
@@ -46,35 +47,61 @@ public class Menu implements Activity, Receiver {
 		Logo = sp.getImage();
 		logo_res = Responsive.createRectangle(null, new Rectangle(Logo.getWidth(), Logo.getHeight()), 50, 50);
 	}
+	
 	@Override
 	public void enter() {
-		if(list.isEmpty()) {
-			int amount = Engine.RAND.nextInt(45) + 5;
-			for(int i = 0; i < amount; i++) {
-				List<BufferedImage> list_sprites = new ArrayList<BufferedImage>();
-				int index = 1;
-				while(true) {
-					try {
-						list_sprites.add(Tile.Factory(index, 0, 0).getSprite());
-					}catch(RuntimeException e) {
-						break;
-					}
-					index++;
-				}
-				index = 1;
-				while(true) {
-					try {
-						list_sprites.add(Entity.Factory(index, 0, 0).getSprite());
-					}catch(RuntimeException e) {
-						break;
-					}
-					index++;
-				}
-				int x = Engine.RAND.nextInt(Engine.getWidth() - Tile.getSize());
-				int y = Engine.RAND.nextInt(Engine.getHeight() - Tile.getSize());
-				list.add(new Buoyant(list_sprites.get(Engine.RAND.nextInt(list_sprites.size())), x, y, Tile.getSize(), Tile.getSize()));
-			}
-		}
+//		if(list.isEmpty()) {
+//			List<Objects> toDispose = new ArrayList<Objects>();
+//			int amount = Engine.RAND.nextInt(45) + 50;
+//			for(int i = 0; i < amount; i++) {
+//				List<BufferedImage> list_sprites = new ArrayList<BufferedImage>();
+//				int index = 1;
+//				long startTime = System.nanoTime();
+//				while(true) {
+//					try {
+//						Tile tile = null;
+//						for(Objects o : toDispose) {
+//							if(o instanceof Tile && o.ID() == index) {
+//								tile = (Tile)o;
+//							}
+//						}
+//						if(tile == null)
+//							tile = Tile.Factory(index, 0, 0);
+//						list_sprites.add(tile.getSprite());
+//						tile.dispose();
+//					}catch(RuntimeException e) {
+//						break;
+//					}
+//					index++;
+//				}
+//				long estimatedTime = System.nanoTime() - startTime;
+//				System.out.printf("Draw runtime: %.4f ms%n", estimatedTime / 1000000d);
+//				index = 1;
+//				while(true) {
+//					try {
+//						Entity entity = null;
+//						for(Objects o : toDispose) {
+//							if(o instanceof Entity && o.ID() == index) {
+//								entity = (Entity)o;
+//							}
+//						}
+//						if(entity == null)
+//							entity = Entity.Factory(index, 0, 0);
+//						list_sprites.add(entity.getSprite());
+//						entity.dispose();
+//					}catch(RuntimeException e) {
+//						break;
+//					}
+//					index++;
+//				}
+//				int x = Engine.RAND.nextInt(Engine.getWidth() - Tile.getSize());
+//				int y = Engine.RAND.nextInt(Engine.getHeight() - Tile.getSize());
+//				list.add(new Buoyant(list_sprites.get(Engine.RAND.nextInt(list_sprites.size())), x, y, Tile.getSize(), Tile.getSize()));
+//			}
+//			for(Objects o : toDispose) {
+//				o.dispose();
+//			}
+//		}
 	}
 	
 	private void drawBackground() {
@@ -219,6 +246,7 @@ public class Menu implements Activity, Receiver {
 	}
 
 	public void dispose() {
+		list.clear();
 	}
 	
 	private static class Buoyant {

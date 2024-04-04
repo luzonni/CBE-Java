@@ -64,5 +64,10 @@ public abstract class Particle extends Objects {
 		g.fillRect((int)getX() - Game.getCam().getX(), (int)getY() - Game.getCam().getY(), getWidth(), getHeight());
 		g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 	}
+	
+	@Override
+	public void dispose() {
+		
+	}
 
 }

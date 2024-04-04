@@ -98,5 +98,10 @@ public class Trampoline extends Tile {
 		renderTile(Floor.sprite[Floor.index], g);
 		super.render(g);
 	}
+	
+	@Override
+	public void dispose() {
+		sprites = null;
+	}
 
 }

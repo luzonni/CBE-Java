@@ -49,5 +49,10 @@ public class Repellent extends Tile {
 	public void render(Graphics2D g) {
 		renderTile(sprite, g);
 	}
+	
+	@Override
+	public void dispose() {
+		sprite = null;
+	}
 
 }

@@ -61,5 +61,11 @@ public class Cannon extends Entity {
 		renderEntity(cannon, g);
 		g.rotate(-radians, getX() - Game.getCam().getX() + getWidth()/2, getY() - Game.getCam().getY() + getHeight()/2);
 	}
+	
+	@Override
+	public void dispose() {
+		base = null;
+		cannon = null;
+	}
 
 }

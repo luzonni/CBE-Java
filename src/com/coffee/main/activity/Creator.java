@@ -356,6 +356,8 @@ public class Creator implements Activity {
 			UserInterface.getButtons().remove("next");
 		if(this.picture != null)
 			this.picture.stop();
+		if(this.camera != null)
+			this.camera.stop();
 	}
 	
 }

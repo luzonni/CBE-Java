@@ -60,5 +60,10 @@ class IronBall extends Entity {
 		renderEntity(sprite, g);
 		g.rotate(-rotate, getMiddle().x - Game.getCam().getX(), getMiddle().y - Game.getCam().getY());
 	}
+	
+	@Override
+	public void dispose() {
+		sprite = null;
+	}
 
 }

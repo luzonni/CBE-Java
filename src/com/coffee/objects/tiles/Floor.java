@@ -24,5 +24,10 @@ public class Floor extends Tile {
 	public BufferedImage getSprite() {
 		return sprite[index];
 	}
+	
+	@Override
+	public void dispose() {
+		sprite = null;
+	}
 
 }

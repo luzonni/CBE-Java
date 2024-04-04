@@ -58,7 +58,7 @@ public class Window extends Canvas implements Runnable {
 	public void initFrame(){
 		frame.add(this);
 		frame.setUndecorated(Engine.FullScreen);
-		frame.setResizable(true);
+		frame.setResizable(false);
 		frame.setAlwaysOnTop(Engine.AlwaysOnTop);
 		if(Engine.FullScreen)
 			setPreferredSize(getScreenSize());

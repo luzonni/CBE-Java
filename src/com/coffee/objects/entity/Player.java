@@ -162,4 +162,9 @@ public class Player extends Entity {
 		renderEntity(Sprite(), g);
 		
 	}
+	
+	@Override
+	public void dispose() {
+		
+	}
 }

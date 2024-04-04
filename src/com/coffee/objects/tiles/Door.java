@@ -45,7 +45,11 @@ public class Door extends Tile {
 	public void render(Graphics2D g) {
 		renderTile(Floor.sprite[Floor.index], g);
 		renderTile(getSprite(), g);
-
+	}
+	
+	@Override
+	public void dispose() {
+		sprite = null;
 	}
 
 }

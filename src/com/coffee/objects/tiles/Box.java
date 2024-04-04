@@ -51,4 +51,10 @@ public class Box extends Tile {
 		renderTile(Floor.sprite[Floor.index], g);
 		renderTile(sprite[this.isSolid() ? 0 : 1][timer.pit() ? 0 : 1], g);
 	}
+	
+	@Override
+	public void dispose() {
+		sprite = null;
+	}
+	
 }

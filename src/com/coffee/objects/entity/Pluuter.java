@@ -122,5 +122,10 @@ public class Pluuter extends Entity {
 			sprite = Flip.Vertical(sprite);
 		renderEntity(sprite, g);
 	}
+	
+	@Override
+	public void dispose() {
+		sprites = null;
+	}
 
 }

@@ -50,5 +50,10 @@ class Spit extends Entity {
 		g.setColor(Engine.Color_Primary);
 		g.fillRect((int)getX() - Game.getCam().getX(), (int)getY() - Game.getCam().getY(), getWidth(), getHeight());
 	}
+	
+	@Override
+	public void dispose() {
+		
+	}
 
 }

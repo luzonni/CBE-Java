@@ -392,4 +392,13 @@ public class Level implements Receiver {
 		g.drawImage(picture, x - Game.getCam().getX(), y - Game.getCam().getY(), w, h, null);
 	}
 	
+	public void dispose() {
+		for(Entity entity : getEntities()) {
+			entity.dispose();
+		}
+		for(Tile tile : getMap()) {
+			tile.dispose();
+		}
+	}
+	
 }

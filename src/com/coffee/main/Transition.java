@@ -12,30 +12,38 @@ import com.coffee.ui.UserInterface;
 
 class Transition implements Runnable {
 
-	private static Thread thread;
-	private static boolean isRunning;
+	private Thread thread;
+	public volatile boolean isRunning;
 	
-	private BufferedImage image;
 	private Activity activity;
 	private int STEP;
+	private volatile Object waiter;
 	
-	public Transition(Activity activity) {
+	public Transition(Activity activity, Object waiter) {
 		this.activity = activity;
-	}
-	
-	public synchronized void Start() {
-		thread = new Thread(this, "Thread - Game");
+		this.waiter = waiter;
+		thread = new Thread(this, "Thread - Transition");
 		isRunning = true;
 		thread.start();
 	}
 	
-	private void Stop() {
-		try {
-			thread.join();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+	public static void start(Activity activity, Object waiter) {
+		new Transition(activity, waiter);
+		synchronized (waiter) {
+			try {
+				waiter.wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
+		
+	}
+	
+	private void stop() {
 		isRunning = false;
+		synchronized (waiter) {
+			this.waiter.notify();
+		}
 	}
 	
 	private void tick() {
@@ -73,13 +81,15 @@ class Transition implements Runnable {
 		
 		g.dispose();
 		
+		Engine.Buffer.getDrawGraphics().drawImage(image, 0, 0, Engine.getWidth(), Engine.getHeight(), null);
+		Engine.Buffer.show();
+		
 		STEP++;
 		if(STEP == 10)
 			transit();
 		
-		setImage(image);
 		if(STEP == 20)
-			finish();
+			stop();
 	}
 	
 	private void transit() {
@@ -89,19 +99,6 @@ class Transition implements Runnable {
 		Engine.ACTIVITY.enter();
 		Engine.ACTIVITY_RUNNING = true;
 		UserInterface.setReceiver(Engine.ACTIVITY);
-	}
-	
-	private void setImage(BufferedImage image) {
-		this.image = image;
-	}
-	
-	private void finish() {
-		this.image = null;
-		Stop();
-	}
-	
-	public BufferedImage getImage() {
-		return this.image;
 	}
 	
 	@Override

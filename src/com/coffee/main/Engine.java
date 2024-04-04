@@ -35,8 +35,8 @@ public class Engine implements Runnable {
 	public static int FRAMES;
 	public static int HERTZ;
 	
-	public static boolean FullScreen;
-	public static boolean AlwaysOnTop;
+	public static boolean FullScreen = false;
+	public static boolean AlwaysOnTop = false;
 	public static int GameScale = 3;
 	public static int Volume = 40;
 	public static boolean ANTIALIASING = false;
@@ -61,7 +61,6 @@ public class Engine implements Runnable {
 	public static int INDEX_LEVEL = 1;
 	
 	public static Random RAND;
-	public static Transition transition;
 	
 	public final static Color[][] PALLET = {
 				{new Color(180, 180, 180), new Color(80, 80, 80), new Color(0, 0, 0)},
@@ -72,7 +71,6 @@ public class Engine implements Runnable {
 				{new Color(226, 252, 165), new Color(52, 100, 80), new Color(6, 8, 16)},
 				{new Color(249, 247, 196), new Color(120, 100, 125), new Color(6, 10, 48)},
 				{new Color(141, 169, 144), new Color(94, 93, 91), new Color(27, 8, 27)},
-				{new Color(141, 169, 144), new Color(94, 93, 91), new Color(27, 8, 27)},
 				{new Color(40, 40, 160), new Color(50, 30, 100), new Color(0, 0, 0)}
 			};
 	
@@ -81,11 +79,13 @@ public class Engine implements Runnable {
 	public static Color Color_Secondary = new Color(127, 121, 99);
 	public static Color Color_Tertiary = new Color(26, 23, 18);
 	
+	//TODO ajeitar sistemas de botões: adicionar, e suas posições estão confusas e problematicas!
+	
 	public static void main(String[] args) {
 		FontG.addFont("septem");
 		RAND = new Random();
 		ME = new Engine();
-		ME.Start();
+		ME.start();
 		Sound.load();
 	}
 	
@@ -93,18 +93,18 @@ public class Engine implements Runnable {
 		getConfig();
 	}
 
-	public synchronized void Start() {
+	public synchronized void start() {
 		SET_PALLET();
 		WINDOW = new Window(GameTag + " / The Universe");
 		UI = new UserInterface();
-		setActivity(new Menu());
+		ACTIVITY = new Menu();
 		ACTIVITY_RUNNING = true;
 		thread = new Thread(ME, "Thread - Game");
 		isRunning = true;
 		thread.start();
 	}
 	
-	public synchronized void Stop() {
+	public synchronized void stop() {
 		thread.interrupt();
 		new Thread(new Runnable() {
 			
@@ -112,7 +112,8 @@ public class Engine implements Runnable {
 			public void run() {
 				WINDOW.getFrame().setVisible(false);
 				WINDOW.getFrame().dispose();
-				main(null);
+				ME = new Engine();
+				ME.start();
 			}
 		}).start();
 		if(!WINDOW.isEnabled()) {
@@ -135,28 +136,26 @@ public class Engine implements Runnable {
 		return Engine.resolutions[Engine.INDEX_RES];
 	}
 	
-	public static void setActivity(Activity activity) {
+	public synchronized static void setActivity(Activity activity) {
 		if(ACTIVITY != null)
 			ACTIVITY.dispose();
 		ACTIVITY_RUNNING = false;
-		transition = new Transition(activity);
-		transition.Start();
+		Transition.start(activity, ME);
 	}
 	
-	public static void setActivity(Activity activity, ActionBack action) {
+	public synchronized static void setActivity(Activity activity, ActionBack action) {
 		if(ACTIVITY != null)
 			ACTIVITY.dispose();
 		ACTIVITY_RUNNING = false;
 		UserInterface.setActionBack(action);
-		transition = new Transition(activity);
-		transition.Start();
+		Transition.start(activity, ME);
 	}
 	
 	private void getConfig() {
 		String path = System.getProperty("user.dir") + "/config.json";
 		File file = new File(path);
 		if(!file.exists()) 
-			setConfig(Engine.Volume, Engine.INDEX_PALLET, Engine.INDEX_RES, Engine.GameScale);
+			setConfig(Engine.Volume, Engine.INDEX_PALLET, Engine.FullScreen, Engine.INDEX_RES, Engine.GameScale);
 		JSONObject object = null;
 		try {
 			InputStream istream = new FileInputStream(file);
@@ -167,15 +166,17 @@ public class Engine implements Runnable {
 		}catch (Exception e) {}
 		Engine.Volume = ((Number)object.get("VOLUM")).intValue();
 		Engine.INDEX_PALLET = ((Number)object.get("PALLET")).intValue();
+		Engine.FullScreen = ((Boolean)object.get("FULLSCREEN")).booleanValue();
 		Engine.INDEX_RES = ((Number)object.get("RESOLUTION")).intValue();
 		Engine.GameScale = ((Number)object.get("SCALE")).intValue();
 	}
 	
-	public void setConfig(int volume, int pallet, int res, int scale) {
+	public void setConfig(int volume, int pallet, boolean foolscreen, int res, int scale) {
 		String path = System.getProperty("user.dir") + "/config.json";
 		JSONObject object = new JSONObject();
 		object.put("VOLUM", volume);
 		object.put("PALLET", pallet);
+		object.put("FULLSCREEN", foolscreen);
 		object.put("RESOLUTION", res);
 		object.put("SCALE", scale);
 		try {
@@ -230,11 +231,6 @@ public class Engine implements Runnable {
 	
 	private void render(Graphics2D graphics) {
 		graphics.drawImage(Engine.getNoise(), 0, 0, Engine.WINDOW.getWidth(), Engine.WINDOW.getHeight(), null);
-		if(transition != null && transition.getImage() != null) {
-			graphics.setColor(Engine.Color_Tertiary);
-			graphics.fillRect(0, 0, getWidth(), getHeight());
-			graphics.drawImage(transition.getImage(), 0, 0, getWidth(), getHeight(), null);
-		}
 		graphics.dispose();
 		Buffer.show();
 	}
@@ -298,7 +294,7 @@ public class Engine implements Runnable {
 				System.exit(1);
 			}
 		}
-		Stop();
+		stop();
 	}
 
 }

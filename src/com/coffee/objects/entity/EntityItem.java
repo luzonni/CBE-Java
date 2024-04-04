@@ -63,5 +63,10 @@ public class EntityItem extends Entity {
 		g.drawImage(item.getSprite(), (int)getX() - Game.getCam().getX(), (int)getY() + (int)(flying/10d) - Game.getCam().getY(), null);
 		g.rotate(-radians, getX() + getWidth()/2  - Game.getCam().getX(), getY() + getHeight()/2  - Game.getCam().getY());
 	}
+	
+	@Override
+	public void dispose() {
+		
+	}
 
 }

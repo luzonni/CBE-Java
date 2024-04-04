@@ -62,4 +62,9 @@ public class Fake_Wall extends Tile {
 		return sprite;
 	}
 	
+	@Override
+	public void dispose() {
+		sprite = null;
+	}
+	
 }

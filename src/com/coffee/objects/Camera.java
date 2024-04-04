@@ -23,9 +23,6 @@ public class Camera implements Runnable {
 	
 	public synchronized void stop() {
 		running = false;
-		try {
-			this.thread.join();
-		} catch (InterruptedException e) {}
 	}
 	
 	public int getX() {

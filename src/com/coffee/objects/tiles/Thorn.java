@@ -27,5 +27,10 @@ public class Thorn extends Tile {
 	public BufferedImage getSprite() {
 		return sprite;
 	}
+	
+	@Override
+	public void dispose() {
+		sprite = null;
+	}
 
 }

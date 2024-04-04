@@ -65,7 +65,7 @@ public class UserInterface {
 		return UserInterface.buttons;
 	}
 	
-	public void tick() {
+	public synchronized void tick() {
 		console.tick();
 		if(!(Engine.ACTIVITY instanceof Menu))
 			if(buttons.get("back").function()) {

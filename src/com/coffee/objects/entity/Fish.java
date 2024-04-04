@@ -63,5 +63,10 @@ public class Fish extends Entity {
 			currentSprite = Flip.Vertical(currentSprite);
 		renderEntity(currentSprite, g);
 	}
+	
+	@Override
+	public void dispose() {
+		sprite = null;
+	}
 
 }

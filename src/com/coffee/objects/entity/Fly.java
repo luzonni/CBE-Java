@@ -4,7 +4,6 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 import com.coffee.main.Engine;
 import com.coffee.main.Geometry;
@@ -91,6 +90,11 @@ public class Fly extends Entity {
 	public void render(Graphics2D g) {
 		ai.render(g);
 		renderEntity(sprite[indexAnim], g);
+	}
+	
+	@Override
+	public void dispose() {
+		sprite = null;
 	}
 
 }

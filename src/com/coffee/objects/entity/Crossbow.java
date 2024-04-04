@@ -83,5 +83,11 @@ public class Crossbow extends Entity {
 		renderEntity(bow, g);
 		g.rotate(-(radians - Math.PI/4), getX() - Game.getCam().getX() + getWidth()/2, getY() - Game.getCam().getY() + getHeight()/2);
 	}
+	
+	@Override
+	public void dispose() {
+		base = null;
+		bow = null;
+	}
 
 }

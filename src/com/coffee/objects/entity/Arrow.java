@@ -60,5 +60,10 @@ public class Arrow extends Entity {
 		g.drawImage(sprite, (int)getX() - getWidth()/2 - Game.getCam().getX(), (int)getY() - Game.getCam().getY(), getWidth(), getHeight(), null);
 		g.rotate(-direction, getMiddle().x - Game.getCam().getX(), getMiddle().getY() - Game.getCam().getY());
 	}
+	
+	@Override
+	public void dispose() {
+		sprite = null;
+	}
 
 }

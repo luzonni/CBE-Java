@@ -79,5 +79,10 @@ public class Bomb extends Entity {
 	public void render(Graphics2D g) {
 		renderEntity(getSprite(), g);
 	}
+	
+	@Override
+	public void dispose() {
+		sprites = null;
+	}
 
 }

@@ -10,7 +10,6 @@ import com.coffee.command.Receiver;
 import com.coffee.graphics.FontG;
 import com.coffee.main.Engine;
 import com.coffee.main.tools.Responsive;
-import com.coffee.ui.UserInterface;
 
 public class Options implements Activity, Receiver {
 	
@@ -18,6 +17,7 @@ public class Options implements Activity, Receiver {
 	
 	private Responsive volume;
 	private Responsive colors;
+	private Responsive fullscreen;
 	private Responsive resolution;
 	private Responsive scale;
 	private Responsive setter;
@@ -29,7 +29,7 @@ public class Options implements Activity, Receiver {
 	private Map<String, Button> buttons;
 	
 	public Options() {
-		center = Responsive.createPoint(null, 50, 50);
+		center = Responsive.createPoint(null, 50, 35);
 	}
 
 	@Override
@@ -37,7 +37,6 @@ public class Options implements Activity, Receiver {
 		PALLET = Engine.INDEX_PALLET;
 		RESOLUTION = Engine.INDEX_RES;
 		GAME_SCALE = Engine.GameScale;
-		UserInterface.getConsole().print("if you want to help contact me!", true);
 		buttons = new HashMap<String, Button>();
 		volume = Responsive.createPoint(center, 0, -50*Engine.GameScale);
 		buttons.put("plus_volum", new Button("->", -12*Engine.GameScale, 0, volume, 8));
@@ -47,7 +46,10 @@ public class Options implements Activity, Receiver {
 		buttons.put("plus_color", new Button("->", -12*Engine.GameScale, 0, colors, 8));
 		buttons.put("minus_color", new Button("<-", 12*Engine.GameScale, 0, colors, 8));
 		
-		resolution = Responsive.createPoint(colors, 0, 35*Engine.GameScale);
+		fullscreen = Responsive.createPoint(colors, 0, 35*Engine.GameScale);
+		buttons.put("bool_fullscreen", new Button("" + Engine.FullScreen, 0, 0, fullscreen, 8));
+		
+		resolution = Responsive.createPoint(fullscreen, 0, 35*Engine.GameScale);
 		buttons.put("plus_resolution", new Button("->", 12*Engine.GameScale, 0, resolution, 8));
 		buttons.put("minus_resolution", new Button("<-", -12*Engine.GameScale, 0, resolution, 8));
 		
@@ -71,6 +73,10 @@ public class Options implements Activity, Receiver {
 			this.PALLET ++;
 		if(buttons.get("minus_color").function() && this.PALLET - 1 >= 0)
 			this.PALLET --;
+		if(buttons.get("bool_fullscreen").function()) {
+			Engine.FullScreen = !Engine.FullScreen;
+			buttons.put("bool_fullscreen", new Button("" + Engine.FullScreen, 0, 0, fullscreen, 8));
+		}
 		if(buttons.get("plus_resolution").function() && this.RESOLUTION + 1 <= Engine.resolutions.length-1)
 			this.RESOLUTION ++;
 		if(buttons.get("minus_resolution").function() && this.RESOLUTION - 1 >= 0)
@@ -80,9 +86,8 @@ public class Options implements Activity, Receiver {
 		if(buttons.get("minus_scale").function() && this.GAME_SCALE - 1 >= 2)
 			this.GAME_SCALE --;
 		if(buttons.get("setter").function()) {
-			Engine.ME.setConfig(Engine.Volume, PALLET, RESOLUTION, GAME_SCALE);
+			Engine.ME.setConfig(Engine.Volume, PALLET, Engine.FullScreen, RESOLUTION, GAME_SCALE);
 			Engine.restart();
-			UserInterface.getConsole().print("Restart the game for changes with (*) to be properly applied", true);
 		}
 	}
 
@@ -91,6 +96,7 @@ public class Options implements Activity, Receiver {
 		buttons.forEach((name, button) -> button.render(g));
 		render_volum(g);
 		render_colors(g);
+		render_fullscreen(g);
 		render_resolution(g);
 		render_scale(g);
 	}
@@ -116,7 +122,7 @@ public class Options implements Activity, Receiver {
 	private void render_colors(Graphics2D g) {
 		if(!buttons.containsKey("plus_color") || !buttons.containsKey("minus_color"))
 			return;
-		String value = "*Colors:";
+		String value = "Colors:";
 		Font font = FontG.font(12*Engine.GameScale);
 		int wF = FontG.getWidth(value, font);
 		int hF = FontG.getHeight(value, font);
@@ -139,10 +145,24 @@ public class Options implements Activity, Receiver {
 		buttons.get("minus_color").getResponsive().setRelative(-wB/2 - 2*Engine.GameScale, 0);
 	}
 	
+	private void render_fullscreen(Graphics2D g) {
+		String value = "Fullscreen:";
+		Font font = FontG.font(12*Engine.GameScale);
+		int wF = FontG.getWidth(value, font);
+		int hF = FontG.getHeight(value, font);
+		int xS = fullscreen.getPosition().x - wF/2;
+		int yS = fullscreen.getPosition().y - hF;
+		g.setFont(font);
+		g.setColor(Engine.Color_Tertiary);
+		g.drawString(value, xS + Engine.GameScale, yS + Engine.GameScale);
+		g.setColor(Engine.Color_Primary);
+		g.drawString(value, xS, yS);
+	}
+	
 	private void render_resolution(Graphics2D g) {
 		if(!buttons.containsKey("plus_resolution") || !buttons.containsKey("minus_resolution"))
 			return;
-		String value = "*Resolution:";
+		String value = "Resolution:";
 		Font font = FontG.font(12*Engine.GameScale);
 		int wF = FontG.getWidth(value, font);
 		int hF = FontG.getHeight(value, font);
@@ -170,7 +190,9 @@ public class Options implements Activity, Receiver {
 	private void render_scale(Graphics2D g) {
 		if(!buttons.containsKey("plus_scale") || !buttons.containsKey("minus_scale"))
 			return;
-		String value = "*Game Scale: " + this.GAME_SCALE;
+		String value = "Game Scale: " + this.GAME_SCALE;
+		if(this.GAME_SCALE == 3)
+			value += " (Recomended)";
 		Font font = FontG.font(12*Engine.GameScale);
 		int wF = FontG.getWidth(value, font);
 		int hF = FontG.getHeight(value, font);
