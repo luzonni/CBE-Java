@@ -18,6 +18,7 @@ public class Keyboard implements KeyListener{
 			new Key("S", KeyEvent.VK_S, true),
 			new Key("D", KeyEvent.VK_D, true),
 			new Key("T", KeyEvent.VK_T, true),
+			new Key("K", KeyEvent.VK_K, true),
 			new Key("Shift", KeyEvent.VK_SHIFT, false),
 			new Key("Ctrl", KeyEvent.VK_CONTROL, false),
 			new Key("Escape", KeyEvent.VK_ESCAPE, false),

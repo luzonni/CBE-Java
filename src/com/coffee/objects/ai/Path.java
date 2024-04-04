@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 
+import com.coffee.exceptions.NoWayFound;
 import com.coffee.main.Engine;
 import com.coffee.main.activity.Game;
 import com.coffee.objects.Directions;
@@ -114,7 +115,7 @@ public class Path implements Runnable {
 	public void run() {
 		try {
 			aStar = new A_Star(entity.getMiddle(), end, range);
-		} catch (RuntimeException e) {
+		} catch (NoWayFound e) {
 			return;
 		}
 	}

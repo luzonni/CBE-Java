@@ -22,8 +22,6 @@ import com.coffee.objects.tiles.Tile;
 
 public abstract class Entity extends Objects {
 	
-	private BufferedImage icon_effect;
-	
 	private boolean floating;
 	private Orienteering_Physics oe;
 	
@@ -80,6 +78,9 @@ public abstract class Entity extends Objects {
 		case 15: 
 			entity = new Fly(id, x, y);
 			return entity;
+		case 16: 
+			entity = new Berne(id, x, y);
+			return entity;
 		}
 		throw new RuntimeException("Tile not exist");
 	}
@@ -89,10 +90,10 @@ public abstract class Entity extends Objects {
 		spriteSheet.replaceColor(0xffffffff, Engine.Color_Primary.getRGB());
 		spriteSheet.replaceColor(0xffcccccc, Engine.Color_Secondary.getRGB());
 		spriteSheet.replaceColor(0xff000000, Engine.Color_Tertiary.getRGB());
-		int lenght = (spriteSheet.getWidth())/16;
+		int lenght = spriteSheet.getWidth()/16;
 		BufferedImage[] sprites = new BufferedImage[lenght];
 		for(int i = 0; i < lenght; i++) {
-			sprites[i] = spriteSheet.getSprite(i*(16), 0, 16, 16);
+			sprites[i] = spriteSheet.getSprite(i*16, 0, 16, 16);
 		}
 		return sprites;
 	}
@@ -167,7 +168,7 @@ public abstract class Entity extends Objects {
 			Item[] items = Game.getPlayer().getInventory().getList();
 			for(int i = 0; i < items.length; i++) {
 				if(items[i] instanceof Usable) {
-					if(((Usable)items[i]).set(keys[1], this)) {
+					if(((Usable)items[i]).set(keys[3], this)) {
 						Game.getPlayer().getInventory().remove(items[i]);
 						used(Commands.use);
 						message = "";
@@ -198,7 +199,6 @@ public abstract class Entity extends Objects {
 	
 	public void setEffect(Variables var, BufferedImage icon) {
 		this.setVar(var, true);
-		this.icon_effect = icon;
 	}
 	
 	public boolean isFloating() {
@@ -241,10 +241,8 @@ public abstract class Entity extends Objects {
 	}
 	
 	private void renderEffect(int x, int y, Graphics2D g) {
-		if(icon_effect == null)
-			return;
 		if(getVar(Variables.Armored)) {
-			BufferedImage image = icon_effect;
+			BufferedImage image = Variables.Armored.getIcon();
 			switch (getDirection()) {
 			case Up: 
 				image = Flip.Horizontal(image);

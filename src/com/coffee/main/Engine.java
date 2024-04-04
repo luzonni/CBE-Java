@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.net.URISyntaxException;
 import java.util.Random;
 
 import org.json.simple.JSONObject;
@@ -46,7 +47,7 @@ public class Engine implements Runnable {
 
 	public static final String ResPath = "/com/coffee/res";
 	public static final String GameTag = "Code Break's Escape";
-	public static double MaxFrames = 144;
+	public static double MaxFrames = 60;
 	
 	public static Window WINDOW;
 	public static UserInterface UI;
@@ -57,8 +58,8 @@ public class Engine implements Runnable {
 	public static Activity ACTIVITY;
 	public static boolean ACTIVITY_RUNNING;
 	
-	public static String[] LEVELS = {"start", "first_step", "maybe"};
-	public static int INDEX_LEVEL = 0;
+	public static String[] LEVELS = {"start", "maybe"};
+	public static int INDEX_LEVEL = 1;
 	
 	public static Random RAND;
 	public static Transition transition;
@@ -106,10 +107,23 @@ public class Engine implements Runnable {
 	
 	public synchronized void Stop() {
 		thread.interrupt();
+		new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				WINDOW.getFrame().setVisible(false);
+				WINDOW.getFrame().dispose();
+				main(null);
+			}
+		}).start();
 		if(!WINDOW.isEnabled()) {
 			WINDOW = null;
 			UI = null;
 		}
+	}
+	
+	public synchronized static void restart() {
+		ME.isRunning = false;
 	}
 
 	public static void SET_PALLET() {
@@ -285,6 +299,7 @@ public class Engine implements Runnable {
 				System.exit(1);
 			}
 		}
+		Stop();
 	}
 
 }

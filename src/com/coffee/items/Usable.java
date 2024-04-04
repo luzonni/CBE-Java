@@ -6,6 +6,7 @@ import com.coffee.objects.entity.Entity;
 public class Usable extends Item {
 
 	private Variables var;
+	
 
 	public Usable(Variables var) {
 		super(var.getName());

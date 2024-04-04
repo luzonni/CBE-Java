@@ -81,6 +81,7 @@ public class Options implements Activity, Receiver {
 			this.GAME_SCALE --;
 		if(buttons.get("setter").function()) {
 			Engine.ME.setConfig(Engine.Volume, PALLET, RESOLUTION, GAME_SCALE);
+			Engine.restart();
 			UserInterface.getConsole().print("Restart the game for changes with (*) to be properly applied", true);
 		}
 	}

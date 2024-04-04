@@ -7,7 +7,7 @@ public enum Commands {
 	move(3, "Use to move a selected object", "\"move x y\" (The values will be added to the current position)"),
 	remove(1, "Use to remove a selected object"),
 	shot(2, "Use to shot a arrow", "\"shot up\"  (Which side do you want to shoot)"),
-	use(2, "Use to use an item on some entity", "use \"entity name\" \"item name\""),
+	use(2, "Use to use an item on some entity", "use \"item name\" in \"entity name\" "),
 	put(4, "Use to place an object from your inventory on the map", "put \"objct name\" X Y (position relative to you)");
 	
 	int length;

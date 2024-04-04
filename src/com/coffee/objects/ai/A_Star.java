@@ -4,6 +4,8 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.coffee.exceptions.NoWayFound;
+
 class A_Star {
 
 	private List<Node> path;
@@ -67,8 +69,10 @@ class A_Star {
 						bestNodeIndex = i;
 				}
 			}
-			if(openList.isEmpty())
-				return;
+			if(openList.isEmpty()) {
+				System.err.println("No Way Found");
+				throw new NoWayFound();
+			}
 			current_Node = openList.get(bestNodeIndex);
 			if(current_Node == goal_Node) {
 				goalReached = true;
