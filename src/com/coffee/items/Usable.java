@@ -17,7 +17,7 @@ public class Usable extends Item {
 	
 	public boolean set(String name, Entity entity) {
 		if(getName().equalsIgnoreCase(name)) {
-			entity.setEffect(var, getIcon());
+			entity.setEffect(var);
 			return true;
 		}
 		return false;

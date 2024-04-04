@@ -1,13 +1,11 @@
 package com.coffee.objects.entity;
 
-import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
 import com.coffee.command.Commands;
-import com.coffee.graphics.Flip;
 import com.coffee.graphics.SpriteSheet;
 import com.coffee.items.Item;
 import com.coffee.items.Usable;
@@ -168,9 +166,10 @@ public abstract class Entity extends Objects {
 			Item[] items = Game.getPlayer().getInventory().getList();
 			for(int i = 0; i < items.length; i++) {
 				if(items[i] instanceof Usable) {
-					if(((Usable)items[i]).set(keys[3], this)) {
+					if(((Usable)items[i]).set(keys[1], this)) {
 						Game.getPlayer().getInventory().remove(items[i]);
 						used(Commands.use);
+						Game.getLevel().clearSelect();
 						message = "";
 					}else
 						message = "Item not found";
@@ -197,7 +196,7 @@ public abstract class Entity extends Objects {
 		this.floating = floating;
 	}
 	
-	public void setEffect(Variables var, BufferedImage icon) {
+	public void setEffect(Variables var) {
 		this.setVar(var, true);
 	}
 	
@@ -237,30 +236,31 @@ public abstract class Entity extends Objects {
 			y += (Engine.RAND.nextInt(3*Engine.GameScale) - 1*Engine.GameScale);
 		}
 		g.drawImage(sprite, x - Game.getCam().getX(), y - Game.getCam().getY(), getWidth(), getHeight(), null);
-		renderEffect(x, y, g);
+		//TODO fix effect shower
+//		renderEffect(x, y, g);
 	}
 	
-	private void renderEffect(int x, int y, Graphics2D g) {
-		if(getVar(Variables.Armored)) {
-			BufferedImage image = Variables.Armored.getIcon();
-			switch (getDirection()) {
-			case Up: 
-				image = Flip.Horizontal(image);
-				break;
-			case Right:
-				image = Flip.Rotate(image, -90);
-				break;
-			case Left:
-				image = Flip.Rotate(image, 90);
-				break;
-			default:
-				break;
-			}
-			g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
-			g.drawImage(image, x - Game.getCam().getX(), y - Game.getCam().getY(), getWidth(), getHeight(), null);
-			g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
-		}
-	}
+//	private void renderEffect(int x, int y, Graphics2D g) {
+//		if(getVar(Variables.Armored)) {
+//			BufferedImage image = Usable.getIcon();
+//			switch (getDirection()) {
+//			case Up: 
+//				image = Flip.Horizontal(image);
+//				break;
+//			case Right:
+//				image = Flip.Rotate(image, -90);
+//				break;
+//			case Left:
+//				image = Flip.Rotate(image, 90);
+//				break;
+//			default:
+//				break;
+//			}
+//			g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
+//			g.drawImage(image, x - Game.getCam().getX(), y - Game.getCam().getY(), getWidth(), getHeight(), null);
+//			g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+//		}
+//	}
 	
 	
 }

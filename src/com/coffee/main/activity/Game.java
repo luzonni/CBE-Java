@@ -91,6 +91,8 @@ public class Game implements Activity, Receiver {
 	}
 	
 	public void tick() {
+		System.out.println(getLevel().getEntities().size());
+		System.out.println(getLevel().getMap().length);
 		if(UserInterface.getButtons().get("restart").function()) {
 			Game.restart();
 		}

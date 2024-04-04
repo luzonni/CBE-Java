@@ -185,6 +185,10 @@ public class Level implements Receiver {
 		return (String)this.level.get("NAME");
 	}
 	
+	public void clearSelect() {
+		this.selected = null;
+	}
+	
 	public List<Commands> getKeys() {
 		return this.list_keys;
 	}
@@ -243,7 +247,7 @@ public class Level implements Receiver {
 		String message = "Command no access";
 		if(take(keys, Commands.clear)) {
 			if(selected != null) {
-				selected = null;
+				clearSelect();
 				used(Commands.clear);
 				message = "Clean";
 			}

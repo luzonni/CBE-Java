@@ -131,7 +131,7 @@ public abstract class Tile extends Objects {
 			int w = Game.getLevel().getBounds().width / Tile.getSize();
 			int h = Game.getLevel().getBounds().height / Tile.getSize();
 			int x_next = Integer.parseInt(keys[1]);
-			int y_next = Integer.parseInt(keys[2]);
+			int y_next = Integer.parseInt(keys[2])*-1;
 			Tile curTile = this;
 			int xIndex = (int)curTile.getX() / Tile.getSize();
 			int yIndex = (int)curTile.getY() / Tile.getSize();
