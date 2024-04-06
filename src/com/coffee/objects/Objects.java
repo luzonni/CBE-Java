@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 import java.util.Comparator;
 
 import com.coffee.command.Receiver;
+import com.coffee.objects.entity.Entity;
 import com.coffee.objects.tiles.Tile;
 
 public abstract class Objects implements Receiver {
@@ -100,6 +101,31 @@ public abstract class Objects implements Receiver {
 	
 	public Rectangle getBounds() {
 		return new Rectangle((int)getX(), (int)getY(), getWidth(), getHeight());
+	}
+	
+	public static void disposeAll() {
+		boolean entities = true;
+		int indexEntities = 1;
+		while(entities) {
+			try {
+				Entity en = Entity.Factory(indexEntities, 0, 0);
+				en.dispose();
+				indexEntities++;
+			}catch (Exception e) {
+				entities = false;
+			}
+		}
+		boolean tiles = true;
+		int indexTiles = 0;
+		while(tiles) {
+			try {
+				Tile t = Tile.Factory(indexTiles, 0, 0);
+				t.dispose();
+				indexTiles++;
+			}catch (Exception e) {
+				tiles = false;
+			}
+		}
 	}
 	
 }

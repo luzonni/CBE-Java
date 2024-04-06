@@ -20,7 +20,8 @@ import org.json.simple.parser.JSONParser;
 import com.coffee.graphics.FontG;
 import com.coffee.main.activity.Activity;
 import com.coffee.main.activity.Menu;
-import com.coffee.ui.ActionBack;
+import com.coffee.main.tools.ActionBack;
+import com.coffee.objects.Objects;
 import com.coffee.ui.UserInterface;
 
 public class Engine implements Runnable {
@@ -61,6 +62,11 @@ public class Engine implements Runnable {
 	public static int INDEX_LEVEL = 1;
 	
 	public static Random RAND;
+	
+	public static final int PRIMARY = 0xffffffff;
+	public static final int SECUNDATY = 0xffcccccc;
+	public static final int TERTIARY = 0xff000000;
+	
 	
 	public final static Color[][] PALLET = {
 				{new Color(180, 180, 180), new Color(80, 80, 80), new Color(0, 0, 0)},
@@ -107,11 +113,11 @@ public class Engine implements Runnable {
 	public synchronized void stop() {
 		thread.interrupt();
 		new Thread(new Runnable() {
-			
 			@Override
 			public void run() {
 				WINDOW.getFrame().setVisible(false);
 				WINDOW.getFrame().dispose();
+				Objects.disposeAll();
 				ME = new Engine();
 				ME.start();
 			}
@@ -137,18 +143,26 @@ public class Engine implements Runnable {
 	}
 	
 	public synchronized static void setActivity(Activity activity) {
-		if(ACTIVITY != null)
-			ACTIVITY.dispose();
 		ACTIVITY_RUNNING = false;
-		Transition.start(activity, ME);
+		Transition.start(() -> {
+			ACTIVITY.dispose();
+			Engine.ACTIVITY = activity;
+			Engine.ACTIVITY.enter();
+			Engine.ACTIVITY_RUNNING = true;
+			UserInterface.setReceiver(Engine.ACTIVITY);
+		});
 	}
 	
 	public synchronized static void setActivity(Activity activity, ActionBack action) {
-		if(ACTIVITY != null)
-			ACTIVITY.dispose();
 		ACTIVITY_RUNNING = false;
 		UserInterface.setActionBack(action);
-		Transition.start(activity, ME);
+		Transition.start(() -> {
+			ACTIVITY.dispose();
+			Engine.ACTIVITY = activity;
+			Engine.ACTIVITY.enter();
+			UserInterface.setReceiver(Engine.ACTIVITY);
+			Engine.ACTIVITY_RUNNING = true;
+		});
 	}
 	
 	private void getConfig() {
@@ -258,9 +272,10 @@ public class Engine implements Runnable {
 				delta_HZ += (nowHZ - lastTimeHZ) / ns_HZ;
 				lastTimeHZ = nowHZ;
 				if(delta_HZ >= 1) {
-					if(ACTIVITY_RUNNING && ACTIVITY != null)
+					if(ACTIVITY_RUNNING && ACTIVITY != null) {
 						ACTIVITY.tick();
-					UI.tick();
+						UI.tick();
+					}
 					Hz++;
 					delta_HZ--;
 				}
@@ -270,10 +285,11 @@ public class Engine implements Runnable {
 				lastTimeFPS = nowFPS;
 				if(delta_FPS >= 1) {
 					Graphics2D g = getGraphics();
-					if(ACTIVITY_RUNNING && ACTIVITY != null)
+					if(ACTIVITY_RUNNING && ACTIVITY != null) {
 						ACTIVITY.render(g);
-					UI.render(g);
-					render(g);
+						UI.render(g);
+						render(g);
+					}
 					frames++;
 					delta_FPS--;
 				}

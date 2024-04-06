@@ -113,7 +113,7 @@ public class Creator implements Activity {
 		Activity activity = Engine.ACTIVITY;
 		if(activity instanceof Creator)
 			return ((Creator) activity).camera;
-		throw new RuntimeException("Not in game");
+		throw new RuntimeException("Not in Creator");
 	}
 	
 	@Override

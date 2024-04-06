@@ -10,12 +10,12 @@ import com.coffee.objects.particles.Kabum;
 
 public class Fake_Wall extends Tile {
 	
-	protected static BufferedImage sprite;
+	protected static BufferedImage sprites;
 	
 	public Fake_Wall(int id, int x, int y) {
 		super(id, x, y);
-		if(sprite == null) {
-			sprite = buildSprite();
+		if(sprites == null) {
+			sprites = buildSprite();
 		}
 		this.setSolid(true);
 	}
@@ -47,10 +47,9 @@ public class Fake_Wall extends Tile {
 				Tile tile = map[i];
 				if(tile.equals(this)) {
 					map[i] = Tile.Factory(2, (int)getX(), (int)getY());
-					
 					for(int y = (int)getY()/Engine.GameScale; y < (int)getY()/Engine.GameScale + getHeight()/Engine.GameScale; y++)
 						for(int x = (int)getX()/Engine.GameScale; x < (int)getX()/Engine.GameScale + getWidth()/Engine.GameScale; x++)
-							if(Engine.RAND.nextInt(100) < 25)
+							if(Engine.RAND.nextInt(100) < 15)
 								Game.getLevel().addParticle(new Kabum(x*Engine.GameScale, y*Engine.GameScale));
 				}
 			}
@@ -59,12 +58,12 @@ public class Fake_Wall extends Tile {
 
 	@Override
 	public BufferedImage getSprite() {
-		return sprite;
+		return sprites;
 	}
 	
 	@Override
 	public void dispose() {
-		sprite = null;
+		sprites = null;
 	}
 	
 }

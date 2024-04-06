@@ -393,12 +393,7 @@ public class Level implements Receiver {
 	}
 	
 	public void dispose() {
-		for(Entity entity : getEntities()) {
-			entity.dispose();
-		}
-		for(Tile tile : getMap()) {
-			tile.dispose();
-		}
+		
 	}
 	
 }
