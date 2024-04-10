@@ -18,10 +18,7 @@ import com.coffee.graphics.SpriteSheet;
 import com.coffee.main.Engine;
 import com.coffee.main.Geometry;
 import com.coffee.main.tools.Responsive;
-import com.coffee.objects.Objects;
-import com.coffee.objects.entity.Entity;
 import com.coffee.objects.tiles.Tile;
-import com.coffee.ui.UserInterface;
 
 public class Menu implements Activity, Receiver {
 
@@ -142,18 +139,12 @@ public class Menu implements Activity, Receiver {
 			}
 		}
 		if(P.function()) {
-			Engine.setActivity(new LevelMap(), () -> {
-				Engine.setActivity(new Menu());
-			});
+			Engine.setActivity(new LevelMap());
 		}
 		if(C.function())
-			Engine.setActivity(new Creator(null), () -> {
-				Engine.setActivity(new Menu());
-			});
+			Engine.setActivity(new Creator(null));
 		if(O.function())
-			Engine.setActivity(new Options(), () -> {
-				Engine.setActivity(new Menu());
-			});
+			Engine.setActivity(new Options());
 		if(Q.function()) {
 			try {
 				Thread.sleep(200);
@@ -212,8 +203,8 @@ public class Menu implements Activity, Receiver {
 			index_how_to_play = 0;
 			new Thread(() -> {
 				while(index_how_to_play < steps.length) {
-					if(!UserInterface.getConsole().isWriting()) {
-						UserInterface.getConsole().print(steps[index_how_to_play], true);
+					if(!Engine.UI.getConsole().isWriting()) {
+						Engine.UI.getConsole().print(steps[index_how_to_play], true);
 						index_how_to_play++;
 					}
 				}
@@ -231,8 +222,8 @@ public class Menu implements Activity, Receiver {
 			index_how_to_play = 0;
 			new Thread(() -> {
 				while(index_how_to_play < steps.length) {
-					if(!UserInterface.getConsole().isWriting()) {
-						UserInterface.getConsole().print(steps[index_how_to_play], true);
+					if(!Engine.UI.getConsole().isWriting()) {
+						Engine.UI.getConsole().print(steps[index_how_to_play], true);
 						index_how_to_play++;
 					}
 				}

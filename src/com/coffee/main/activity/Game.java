@@ -6,19 +6,17 @@ import java.awt.Graphics2D;
 
 import com.coffee.Inputs.Mouse;
 import com.coffee.Inputs.Mouse_Button;
-import com.coffee.Inputs.Button.Button;
 import com.coffee.command.Receiver;
 import com.coffee.exceptions.Dead;
 import com.coffee.level.Level;
 import com.coffee.level.Next;
 import com.coffee.main.Engine;
 import com.coffee.main.tools.Responsive;
+import com.coffee.main.ui.win.Helper;
 import com.coffee.objects.Camera;
 import com.coffee.objects.Objects;
 import com.coffee.objects.entity.Entity;
 import com.coffee.objects.entity.Player;
-import com.coffee.ui.UserInterface;
-import com.coffee.ui.win.Helper;
 
 public class Game implements Activity, Receiver {
 	
@@ -48,14 +46,16 @@ public class Game implements Activity, Receiver {
 			helper = new Helper(level.getKeys());
 		else
 			helper.setCommands(level.getKeys());
-		UserInterface.getButtons().put("restart", new Button("Restart", 2*Engine.GameScale, 0, UserInterface.getButtons().get("back").getResponsive(), 10));
-		UserInterface.addView(helper);
+		Engine.UI.addOption("restart", () -> {
+			restart();
+		});
+		Engine.UI.addView(helper);
 	}
 	
 	@Override
 	public String giveCommand(String[] keys) {	
 		if(keys.length == 2 && keys[0].equalsIgnoreCase("clear") && keys[1].equalsIgnoreCase("chat")) {
-			UserInterface.getConsole().clearChat();
+			Engine.UI.getConsole().clearChat();
 			return "";
 		}
 		return level.giveCommand(keys);
@@ -91,9 +91,6 @@ public class Game implements Activity, Receiver {
 	}
 	
 	public void tick() {
-		if(UserInterface.getButtons().get("restart").function()) {
-			Game.restart();
-		}
 		level.tick();
 		if(Mouse.pressing(Mouse_Button.SCROOL)) {
 			int x = lastX_mouse - Mouse.getX();
@@ -118,14 +115,8 @@ public class Game implements Activity, Receiver {
 			if(nextLevel != null) 
 				Game.start(nextLevel);
 			else 
-				Engine.setActivity(new LevelMap(), () -> {
-					Engine.setActivity(new Menu());
-				});
-		}), () -> {
-			Engine.setActivity(new LevelMap(), () -> {
-				Engine.setActivity(new Menu());
-			});
-		});
+				Engine.setActivity(new LevelMap());
+		}));
 	}
 	
 	public static void restart() {
@@ -179,8 +170,8 @@ public class Game implements Activity, Receiver {
 		this.level.selected = null;
 		this.camera.stop();
 		this.level.dispose();
-		UserInterface.clearViews();
-		UserInterface.getButtons().remove("restart");
+		Engine.UI.clearViews();
+		Engine.UI.clearOptions();
 	}
 
 }

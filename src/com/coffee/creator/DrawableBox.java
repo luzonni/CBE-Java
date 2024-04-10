@@ -12,7 +12,6 @@ import com.coffee.main.Engine;
 import com.coffee.main.activity.Creator;
 import com.coffee.main.tools.Responsive;
 import com.coffee.objects.tiles.Tile;
-import com.coffee.ui.UserInterface;
 
 public class DrawableBox implements Runnable {
 	
@@ -94,12 +93,9 @@ public class DrawableBox implements Runnable {
 	}
 	
 	private void draw() {
-		String[] names = UserInterface.getButtons().keySet().toArray(new String[0]);
-		for(int i = 0; i < names.length; i++) {
-			if(UserInterface.getButtons().containsKey(names[i]))
-				if(Mouse.On_Mouse(UserInterface.getButtons().get(names[i]).getBounds()))
-					return;
-		}
+		if(Engine.UI.overButtons()) 
+			return;
+		
 		int scrool = Mouse.Scrool();
 		this.size_drawn -= scrool;
 		if(size_drawn < 2)

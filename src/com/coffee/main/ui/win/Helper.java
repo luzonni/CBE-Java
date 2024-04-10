@@ -1,4 +1,4 @@
-package com.coffee.ui.win;
+package com.coffee.main.ui.win;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -10,7 +10,6 @@ import com.coffee.Inputs.Mouse_Button;
 import com.coffee.command.Commands;
 import com.coffee.graphics.FontG;
 import com.coffee.main.Engine;
-import com.coffee.ui.UserInterface;
 
 public class Helper extends View {
 	
@@ -59,10 +58,10 @@ public class Helper extends View {
 		for(int i = 0; i < list.size(); i++) {
 			Rectangle rec = list.get(i).bounds;
 			if(Mouse.clickOn(Mouse_Button.LEFT, new Rectangle(x, y + i*rec.height, rec.width, rec.height))) {
-				UserInterface.getConsole().print(list.get(i).c.getTextHelp(), true);
+				Engine.UI.getConsole().print(list.get(i).c.getTextHelp(), true);
 			}
 			if(Mouse.clickOn(Mouse_Button.RIGHT, new Rectangle(x, y + i*rec.height, rec.width, rec.height))) {
-				UserInterface.getConsole().print(list.get(i).c.getCommandHelp(), true);
+				Engine.UI.getConsole().print(list.get(i).c.getCommandHelp(), true);
 			}
 		}
 	}

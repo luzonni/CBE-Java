@@ -31,7 +31,6 @@ import com.coffee.objects.entity.Flag;
 import com.coffee.objects.entity.Player;
 import com.coffee.objects.tiles.Air;
 import com.coffee.objects.tiles.Tile;
-import com.coffee.ui.UserInterface;
 
 public class Creator implements Activity {
 	
@@ -41,6 +40,7 @@ public class Creator implements Activity {
 	private TextButton name_sublime;
 	private TextButton name_builder;;
 	private TextButton[] sizes;
+	private Button create_button;
 	private static Selected Selected;
 	private Inventory inventoryTiles;
 	private Inventory inventoryEntities;
@@ -75,7 +75,7 @@ public class Creator implements Activity {
 			}
 			index++;
 		}
-		Responsive res = Responsive.createPoint(UserInterface.getButtons().get("back").getResponsive(), -1, 5*Engine.GameScale);
+		Responsive res = Responsive.createPoint(Engine.UI.getMenuPosition(), -1, 5*Engine.GameScale);
 		inventoryTiles = new Inventory(tiles.toArray(new Tile[0]), res, 1, 1);
 	}
 	
@@ -118,6 +118,9 @@ public class Creator implements Activity {
 	
 	@Override
 	public void enter() {
+		Engine.UI.addOption("Back", () -> {
+			Engine.setActivity(new Menu());
+		});
 		Creator.getCam().setPosition(0, 0);
 		Selected = new Selected();
 		center = Responsive.createPoint(null, 50, 50);
@@ -126,16 +129,22 @@ public class Creator implements Activity {
 		buildInventoryItems();
 		if(level != null) {
 			loader();
-			UserInterface.getButtons().put("new", new Button("New", 2*Engine.GameScale, 0, UserInterface.getButtons().get("back").getResponsive(), 10));
-			UserInterface.getButtons().put("draw", new Button("Draw", 2*Engine.GameScale, 0, UserInterface.getButtons().get("new").getResponsive(), 10));
-			UserInterface.getButtons().put("next", new Button("Save", 0, 0, Responsive.createPoint(null, 95, 95), 10));
+			Engine.UI.addOption("new", () -> {
+				Engine.setActivity(new Creator(null));
+			});
+			Engine.UI.addOption("draw", ()-> {
+				picture.setDrawnable(!picture.isDrawing());
+			});
+			Engine.UI.addOption("next", () -> {
+				testeAndSaveLevel();
+			});
 		}else {
 			sizes = new TextButton[2];
 			sizes[0] = new TextButton("Width", -10*Engine.GameScale, 0, center, 8);
 			sizes[1] = new TextButton("Height", 10*Engine.GameScale, 0, center, 8);
 			name_sublime = new TextButton("level name", 0, -12*Engine.GameScale, center, 8);
 			name_builder = new TextButton("your nick or @", 0, -6*Engine.GameScale, name_sublime.getResponsive(), 8);
-			UserInterface.getButtons().put("next", new Button("Save", 0, 12*Engine.GameScale, center, 8));
+			create_button = new Button("create", 0, 12*Engine.GameScale, center, 8);
 			c_b = new Commands_Boxe(null);
 		}
 	}
@@ -223,11 +232,16 @@ public class Creator implements Activity {
 		int h = Integer.parseInt(string_h);
 		if(w < 3 || h < 3 || NAME == "" || w > 48 || h > 48)
 			return;
-		if(UserInterface.getButtons().get("next").function()) {
-			UserInterface.getButtons().remove("next");
-			UserInterface.getButtons().put("next", new Button("Save", 0, 0, Responsive.createPoint(null, 95, 95), 12));
-			UserInterface.getButtons().put("new", new Button("New", 2*Engine.GameScale, 0, UserInterface.getButtons().get("back").getResponsive(), 10));
-			UserInterface.getButtons().put("draw", new Button("Draw", 2*Engine.GameScale, 0, UserInterface.getButtons().get("new").getResponsive(), 10));
+		if(create_button.function()) {
+			Engine.UI.addOption("new", () -> {
+				Engine.setActivity(new Creator(null));
+			});
+			Engine.UI.addOption("draw", ()-> {
+				picture.setDrawnable(!picture.isDrawing());
+			});
+			Engine.UI.addOption("next", () -> {
+				testeAndSaveLevel();
+			});
 			MAP_TILES = new Grid(new Tile[w*h], w, h);
 			MAP_ENTITIES = new Grid(new Entity[w*h], w, h);
 			picture = new DrawableBox(center, new Rectangle(w, h));
@@ -249,12 +263,6 @@ public class Creator implements Activity {
 	public void tick() {
 		Selected.tick();
 		getLevel();
-		if(UserInterface.getButtons().containsKey("draw") && UserInterface.getButtons().get("draw").function() && picture != null)
-			picture.setDrawnable(!picture.isDrawing());
-		if(UserInterface.getButtons().containsKey("new") && UserInterface.getButtons().get("new").function()) 
-			Engine.setActivity(new Creator(null));
-		if(sizes == null && UserInterface.getButtons().containsKey("next") && UserInterface.getButtons().get("next").function())
-			testeAndSaveLevel();
 		grids();
 		if(picture != null && !picture.isDrawing()) {
 			Tile t = (Tile) inventoryTiles.getItem();
@@ -305,13 +313,11 @@ public class Creator implements Activity {
 			File curPath = new File(System.getProperty("user.dir"));
 			boolean wasSaved = saver.save(curPath, level_file);
 			if(wasSaved)
-				UserInterface.getConsole().print("Saved in directory: " + curPath.getAbsolutePath(), true);
+				Engine.UI.getConsole().print("Saved in directory: " + curPath.getAbsolutePath(), true);
 			else
-				UserInterface.getConsole().print("Unable to save your level", true);
+				Engine.UI.getConsole().print("Unable to save your level", true);
 			Engine.setActivity(new Creator(level_file));
-		}), () -> {
-			Engine.setActivity(new Creator(level_file));
-		});
+		}));
 	}
 	
 	@Override
@@ -340,6 +346,7 @@ public class Creator implements Activity {
 			t.render(g);
 		name_sublime.render(g);
 		name_builder.render(g);
+		create_button.render(g);
 		String value = "/";
 		Font f = FontG.font(12*Engine.GameScale);
 		g.setColor(Engine.Color_Primary);
@@ -350,10 +357,7 @@ public class Creator implements Activity {
 	}
 	
 	public void dispose() {
-		UserInterface.getButtons().remove("new");
-		UserInterface.getButtons().remove("draw");
-		if(UserInterface.getButtons().containsKey("next"))
-			UserInterface.getButtons().remove("next");
+		Engine.UI.clearOptions();
 		if(this.picture != null)
 			this.picture.stop();
 		if(this.camera != null)

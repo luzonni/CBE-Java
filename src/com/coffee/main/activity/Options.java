@@ -59,6 +59,9 @@ public class Options implements Activity, Receiver {
 		
 		setter = Responsive.createPoint(scale, 0, 20*Engine.GameScale);
 		buttons.put("setter", new Button("Set", 0, 0, setter, 8));
+		Engine.UI.addOption("Back", () -> {
+			Engine.setActivity(new Menu());
+		});
 	}
 	
 	@Override
@@ -217,6 +220,7 @@ public class Options implements Activity, Receiver {
 	@Override
 	public void dispose() {
 		buttons.clear();
+		Engine.UI.clearOptions();
 	}
 
 }

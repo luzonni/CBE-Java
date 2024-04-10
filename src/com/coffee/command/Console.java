@@ -8,7 +8,6 @@ import com.coffee.Inputs.Keyboard;
 import com.coffee.Inputs.Button.TextButton;
 import com.coffee.graphics.FontG;
 import com.coffee.main.Engine;
-import com.coffee.ui.UserInterface;
 
 public class Console {
 	
@@ -36,7 +35,7 @@ public class Console {
 		if(commands != null) {
 			String Callback = "Wrong command";
 			try {
-				Callback = UserInterface.getReceiver().giveCommand(commands);
+				Callback = Engine.UI.getReceiver().giveCommand(commands);
 			}catch (Exception e) {
 				e.printStackTrace();
 			}

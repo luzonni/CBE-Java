@@ -35,7 +35,9 @@ public class LevelMap implements Activity, Receiver {
 	
 	@Override
 	public void enter() {
-		
+		Engine.UI.addOption("Back", () -> {
+			Engine.setActivity(new Menu());
+		});
 	}
 	
 	@Override
@@ -73,9 +75,10 @@ public class LevelMap implements Activity, Receiver {
 			if(dir.exists() && Level.isLevel(dir)) {
 				Engine.setActivity(new Game(new Level(dir), () -> {
 					Engine.setActivity(new LevelMap());
-				}), () -> {
-					Engine.setActivity(new LevelMap());
-				});
+					Engine.UI.addOption("Back", () -> {
+						
+					});
+				}));
 				message = "Level loaded";
 			}else {
 				message = "Level does not exist in current directory";
@@ -178,7 +181,7 @@ public class LevelMap implements Activity, Receiver {
 	}
 	
 	public void dispose() {
-		
+		Engine.UI.clearOptions();
 	}
 
 }

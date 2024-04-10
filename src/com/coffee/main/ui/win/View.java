@@ -1,4 +1,4 @@
-package com.coffee.ui.win;
+package com.coffee.main.ui.win;
 
 import java.awt.BasicStroke;
 import java.awt.Font;

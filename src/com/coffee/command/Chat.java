@@ -10,7 +10,6 @@ import java.util.List;
 
 import com.coffee.graphics.FontG;
 import com.coffee.main.Engine;
-import com.coffee.ui.UserInterface;
 
 class Chat {
 	
@@ -39,7 +38,7 @@ class Chat {
 	
 	protected void tick() {
 		x = Engine.getWidth() - 4*Engine.GameScale;
-		y = UserInterface.getConsole().textButton.getBounds().y - 5*Engine.GameScale;
+		y = Engine.UI.getConsole().textButton.getBounds().y - 5*Engine.GameScale;
 		for(int i = 0; i < phrases.size(); i++)
 			phrases.get(i).tick();
 		for(int i = 0; i < phrases.size(); i++) {

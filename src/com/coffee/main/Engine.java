@@ -20,9 +20,8 @@ import org.json.simple.parser.JSONParser;
 import com.coffee.graphics.FontG;
 import com.coffee.main.activity.Activity;
 import com.coffee.main.activity.Menu;
-import com.coffee.main.tools.ActionBack;
+import com.coffee.main.ui.UserInterface;
 import com.coffee.objects.Objects;
-import com.coffee.ui.UserInterface;
 
 public class Engine implements Runnable {
 	
@@ -146,22 +145,10 @@ public class Engine implements Runnable {
 		ACTIVITY_RUNNING = false;
 		Transition.start(() -> {
 			ACTIVITY.dispose();
-			Engine.ACTIVITY = activity;
-			Engine.ACTIVITY.enter();
-			Engine.ACTIVITY_RUNNING = true;
-			UserInterface.setReceiver(Engine.ACTIVITY);
-		});
-	}
-	
-	public synchronized static void setActivity(Activity activity, ActionBack action) {
-		ACTIVITY_RUNNING = false;
-		UserInterface.setActionBack(action);
-		Transition.start(() -> {
-			ACTIVITY.dispose();
-			Engine.ACTIVITY = activity;
-			Engine.ACTIVITY.enter();
-			UserInterface.setReceiver(Engine.ACTIVITY);
-			Engine.ACTIVITY_RUNNING = true;
+			ACTIVITY = activity;
+			ACTIVITY.enter();
+			ACTIVITY_RUNNING = true;
+			UI.setReceiver(Engine.ACTIVITY);
 		});
 	}
 	
