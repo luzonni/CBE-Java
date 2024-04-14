@@ -30,10 +30,12 @@ public class Game implements Activity, Receiver {
 	private int lastX_mouse, lastY_mouse;
 	private float f = 0;
 	private boolean change;
+	private Activity activityToReturn;
 
-	public Game(Level level, Next next) {
+	public Game(Level level, Next next, Activity activityToReturn) {
 		this.level = level;
 		this.next = next;
+		this.activityToReturn = activityToReturn;
 		camera = new Camera();
 		camera.start();
 	}
@@ -46,6 +48,9 @@ public class Game implements Activity, Receiver {
 			helper = new Helper(level.getKeys());
 		else
 			helper.setCommands(level.getKeys());
+		Engine.UI.addOption("Back", () -> {
+			Engine.setActivity(activityToReturn);
+		});
 		Engine.UI.addOption("restart", () -> {
 			restart();
 		});
@@ -116,14 +121,14 @@ public class Game implements Activity, Receiver {
 				Game.start(nextLevel);
 			else 
 				Engine.setActivity(new LevelMap());
-		}));
+		}, new LevelMap()));
 	}
 	
 	public static void restart() {
 		if(!(Engine.ACTIVITY instanceof Game))
 			throw new RuntimeException("Not in game");
 		Game game = ((Game)Engine.ACTIVITY);
-		Engine.setActivity(new Game(new Level(game.level.getLevel()), game.next));
+		Engine.setActivity(new Game(new Level(game.level.getLevel()), game.next, game.activityToReturn));
 	}
 	
 	public static void end() {

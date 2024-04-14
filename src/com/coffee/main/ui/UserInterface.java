@@ -8,6 +8,7 @@ import com.coffee.Inputs.Button.MenuButton;
 import com.coffee.command.Console;
 import com.coffee.command.Receiver;
 import com.coffee.main.Engine;
+import com.coffee.main.activity.Menu;
 import com.coffee.main.tools.ActionBack;
 import com.coffee.main.tools.Responsive;
 import com.coffee.main.ui.win.View;
@@ -48,6 +49,7 @@ public class UserInterface {
 	}
 
 	public void clearOptions() {
+		this.menuButton.hide();
 		this.menuButton.clearOption();
 	}
 	
@@ -73,14 +75,16 @@ public class UserInterface {
 	
 	public synchronized void tick() {
 		console.tick();
-		menuButton.function();
+		if(!(Engine.ACTIVITY instanceof Menu))
+			menuButton.function();
 		for(int i = 0; i < views.size(); i++)
 			views.get(i).tick();
 	}
 	
 	public void render(Graphics2D g) {
 		console.render(g);
-		menuButton.render(g);
+		if(!(Engine.ACTIVITY instanceof Menu))
+			menuButton.render(g);
 		for(int i = 0; i < views.size(); i++) {
 			views.get(i).render(g);
 		}

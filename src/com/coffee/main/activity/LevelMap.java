@@ -78,7 +78,7 @@ public class LevelMap implements Activity, Receiver {
 					Engine.UI.addOption("Back", () -> {
 						
 					});
-				}));
+				}, this));
 				message = "Level loaded";
 			}else {
 				message = "Level does not exist in current directory";

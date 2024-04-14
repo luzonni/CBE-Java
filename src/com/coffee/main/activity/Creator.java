@@ -64,7 +64,7 @@ public class Creator implements Activity {
 		this.camera.start();
 	}
 	
-	private void buildInventoryTiles() {
+	private void buildInventoryTiles(int size) {
 		List<Tile> tiles = new ArrayList<Tile>();
 		int index = 1;
 		while(true) {
@@ -76,10 +76,10 @@ public class Creator implements Activity {
 			index++;
 		}
 		Responsive res = Responsive.createPoint(Engine.UI.getMenuPosition(), -1, 5*Engine.GameScale);
-		inventoryTiles = new Inventory(tiles.toArray(new Tile[0]), res, 1, 1);
+		inventoryTiles = new Inventory(tiles.toArray(new Tile[0]), res, 1, 1, size);
 	}
 	
-	private void buildInventoryEntities() {
+	private void buildInventoryEntities(int size) {
 		List<Entity> entities = new ArrayList<Entity>();
 		int index = 1;
 		while(true) {
@@ -91,10 +91,10 @@ public class Creator implements Activity {
 			}
 			index++;
 		}
-		inventoryEntities = new Inventory(entities.toArray(new Entity[0]), inventoryTiles.getResponsive(), 4*Engine.GameScale, 0);
+		inventoryEntities = new Inventory(entities.toArray(new Entity[0]), inventoryTiles.getResponsive(), 4*Engine.GameScale, 0, size);
 	}
 	
-	private void buildInventoryItems() {
+	private void buildInventoryItems(int size) {
 		List<Entity> entities = new ArrayList<Entity>();
 		int index = 1;
 		while(true) {
@@ -106,7 +106,7 @@ public class Creator implements Activity {
 			}
 			index++;
 		}
-		inventoryItems = new Inventory(entities.toArray(new Entity[0]), inventoryEntities.getResponsive(), 4*Engine.GameScale, 0);
+		inventoryItems = new Inventory(entities.toArray(new Entity[0]), inventoryEntities.getResponsive(), 4*Engine.GameScale, 0, size);
 	}
 	
 	public static Camera getCam() {
@@ -124,20 +124,12 @@ public class Creator implements Activity {
 		Creator.getCam().setPosition(0, 0);
 		Selected = new Selected();
 		center = Responsive.createPoint(null, 50, 50);
-		buildInventoryTiles();
-		buildInventoryEntities();
-		buildInventoryItems();
+		buildInventoryTiles(10);
+		buildInventoryEntities(10);
+		buildInventoryItems(5);
 		if(level != null) {
 			loader();
-			Engine.UI.addOption("new", () -> {
-				Engine.setActivity(new Creator(null));
-			});
-			Engine.UI.addOption("draw", ()-> {
-				picture.setDrawnable(!picture.isDrawing());
-			});
-			Engine.UI.addOption("next", () -> {
-				testeAndSaveLevel();
-			});
+			addButtonsMenu();
 		}else {
 			sizes = new TextButton[2];
 			sizes[0] = new TextButton("Width", -10*Engine.GameScale, 0, center, 8);
@@ -198,7 +190,7 @@ public class Creator implements Activity {
 			pixels[i] = ((Number)list_pixels.get(i)).intValue();
 		picture.setPixels(DrawableBox.convertPixels(pixels));
 	}
-
+	
 	@Override
 	public String giveCommand(String[] keys) {
 		String message = "";
@@ -233,15 +225,7 @@ public class Creator implements Activity {
 		if(w < 3 || h < 3 || NAME == "" || w > 48 || h > 48)
 			return;
 		if(create_button.function()) {
-			Engine.UI.addOption("new", () -> {
-				Engine.setActivity(new Creator(null));
-			});
-			Engine.UI.addOption("draw", ()-> {
-				picture.setDrawnable(!picture.isDrawing());
-			});
-			Engine.UI.addOption("next", () -> {
-				testeAndSaveLevel();
-			});
+			addButtonsMenu();
 			MAP_TILES = new Grid(new Tile[w*h], w, h);
 			MAP_ENTITIES = new Grid(new Entity[w*h], w, h);
 			picture = new DrawableBox(center, new Rectangle(w, h));
@@ -317,7 +301,19 @@ public class Creator implements Activity {
 			else
 				Engine.UI.getConsole().print("Unable to save your level", true);
 			Engine.setActivity(new Creator(level_file));
-		}));
+		}, new Creator(level_file)));
+	}
+	
+	private void addButtonsMenu() {
+		Engine.UI.addOption("new", () -> {
+			Engine.setActivity(new Creator(null));
+		});
+		Engine.UI.addOption("draw", ()-> {
+			picture.setDrawnable(!picture.isDrawing());
+		});
+		Engine.UI.addOption("try", () -> {
+			testeAndSaveLevel();
+		});
 	}
 	
 	@Override

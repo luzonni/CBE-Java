@@ -43,7 +43,7 @@ public class MenuButton extends Button {
 		Responsive res = getResponsive();
 		if(!actionButtons.isEmpty()) 
 			res = actionButtons.get(actionButtons.size()-1).getResponsive();
-		ActionButton acb = new ActionButton(name, Engine.GameScale, 0, res, Engine.GameScale * size, action);
+		ActionButton acb = new ActionButton(name, Engine.GameScale*3, 0, res, Engine.GameScale * size, action);
 		actionButtons.add(acb);
 	}
 
@@ -60,6 +60,10 @@ public class MenuButton extends Button {
 					return true;
 		return false;
 	}
+
+	public void hide() {
+		this.showing = false;
+	}
 	
 	@Override
 	public boolean function() {
@@ -67,8 +71,10 @@ public class MenuButton extends Button {
 		if(showing) {
 			for(int i = 0; i < actionButtons.size(); i++) {
 				ActionButton acb = actionButtons.get(i);
-				if(acb.function())
+				if(acb.function()) {
 					acb.action();
+					hide();
+				}
 			}
 		}
 		if(super.function()) {

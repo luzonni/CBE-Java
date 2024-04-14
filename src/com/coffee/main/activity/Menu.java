@@ -1,11 +1,13 @@
 package com.coffee.main.activity;
 
 import java.awt.AlphaComposite;
+import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,48 +51,12 @@ public class Menu implements Activity, Receiver {
 	public void enter() {
 //		if(list.isEmpty()) {
 //			List<Objects> toDispose = new ArrayList<Objects>();
-//			int amount = Engine.RAND.nextInt(45) + 50;
+//			int amount = Engine.RAND.nextInt(45) + 5;
 //			for(int i = 0; i < amount; i++) {
 //				List<BufferedImage> list_sprites = new ArrayList<BufferedImage>();
-//				int index = 1;
-//				long startTime = System.nanoTime();
-//				while(true) {
-//					try {
-//						Tile tile = null;
-//						for(Objects o : toDispose) {
-//							if(o instanceof Tile && o.ID() == index) {
-//								tile = (Tile)o;
-//							}
-//						}
-//						if(tile == null)
-//							tile = Tile.Factory(index, 0, 0);
-//						list_sprites.add(tile.getSprite());
-//						tile.dispose();
-//					}catch(RuntimeException e) {
-//						break;
-//					}
-//					index++;
-//				}
-//				long estimatedTime = System.nanoTime() - startTime;
-//				System.out.printf("Draw runtime: %.4f ms%n", estimatedTime / 1000000d);
-//				index = 1;
-//				while(true) {
-//					try {
-//						Entity entity = null;
-//						for(Objects o : toDispose) {
-//							if(o instanceof Entity && o.ID() == index) {
-//								entity = (Entity)o;
-//							}
-//						}
-//						if(entity == null)
-//							entity = Entity.Factory(index, 0, 0);
-//						list_sprites.add(entity.getSprite());
-//						entity.dispose();
-//					}catch(RuntimeException e) {
-//						break;
-//					}
-//					index++;
-//				}
+//				
+//				
+//				
 //				int x = Engine.RAND.nextInt(Engine.getWidth() - Tile.getSize());
 //				int y = Engine.RAND.nextInt(Engine.getHeight() - Tile.getSize());
 //				list.add(new Buoyant(list_sprites.get(Engine.RAND.nextInt(list_sprites.size())), x, y, Tile.getSize(), Tile.getSize()));
@@ -162,17 +128,57 @@ public class Menu implements Activity, Receiver {
 		C.render(g);
 		Q.render(g);
 		O.render(g);
-		Rectangle rec = logo_res.getBounds();
-		g.drawImage(Logo, rec.x, rec.y, null);
+		Rectangle recLogo = logo_res.getBounds();
+		g.drawImage(Logo, recLogo.x, recLogo.y, null);
 		Font f = FontG.font(8*Engine.GameScale);
-		String value = "Version: 1.1.2 / Created by @lucaszonzini_";
+		String value = Engine.VERSION;
 		int wF = FontG.getWidth(value, f);
 		int hF = FontG.getHeight(value, f);
 		int x = Engine.getWidth() - wF - Engine.GameScale;
 		int y = Engine.getHeight() - hF/2;
-		g.setColor(Engine.Color_Primary);
+		Rectangle recDesc = new Rectangle(x, y - hF, wF, hF);
+		if(Mouse.On_Mouse(recDesc))
+			g.setColor(Engine.Color_Secondary);
+		else
+			g.setColor(Engine.Color_Primary);
 		g.setFont(f);
 		g.drawString(value, x, y);
+		if(Mouse.clickOn(Mouse_Button.LEFT, recDesc)) {
+			String url = "https://www.instagram.com/lucaszonzini_/";
+
+	        try {
+	            if (Desktop.isDesktopSupported()) {
+	                Desktop desktop = Desktop.getDesktop();
+	                if (desktop.isSupported(Desktop.Action.BROWSE)) {
+	                    desktop.browse(new URI(url));
+	                } else {
+	                    System.err.println("Ação de browse não suportada.");
+	                }
+	            } else {
+	                System.err.println("Desktop não suportado.");
+	            }
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+		}
+		if(Mouse.clickOn(Mouse_Button.LEFT, recLogo)) {
+			String url = "https://github.com/luzonni/CBE-Java";
+
+	        try {
+	            if (Desktop.isDesktopSupported()) {
+	                Desktop desktop = Desktop.getDesktop();
+	                if (desktop.isSupported(Desktop.Action.BROWSE)) {
+	                    desktop.browse(new URI(url));
+	                } else {
+	                    System.err.println("Ação de browse não suportada.");
+	                }
+	            } else {
+	                System.err.println("Desktop não suportado.");
+	            }
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+		}
 	}
 
 	@Override

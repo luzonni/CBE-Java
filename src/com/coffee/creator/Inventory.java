@@ -19,9 +19,11 @@ public class Inventory {
 	private Objects[] inventory;
 	private int page;
 	private Responsive bounds;
+	private int size;
 	
-	public Inventory(Objects[] inventory, Responsive ref, int x, int y) {
+	public Inventory(Objects[] inventory, Responsive ref, int x, int y, int size) {
 		this.default_inventory = inventory;
+		this.size = size;
 		this.bounds = Responsive.createRectangle(ref, new Rectangle(Tile.getSize(), Tile.getSize()), x, y);
 	}
 	
@@ -53,7 +55,7 @@ public class Inventory {
 	}
 	
 	public Objects getItem() {
-		setList(5);
+		setList(size);
 		for(int i = 0; i < inventory.length; i++) {
 			Objects o = inventory[i];
 			if(Mouse.clickOn(Mouse_Button.LEFT, o.getBounds())) {

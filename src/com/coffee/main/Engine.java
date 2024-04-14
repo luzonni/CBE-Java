@@ -25,6 +25,8 @@ import com.coffee.objects.Objects;
 
 public class Engine implements Runnable {
 	
+	public static final String VERSION = "Version: 1.1.2 / Created by @lucaszonzini_";
+	
 	public static volatile Engine ME = null;
 	
 	public volatile Thread thread;
@@ -84,7 +86,6 @@ public class Engine implements Runnable {
 	public static Color Color_Secondary = new Color(127, 121, 99);
 	public static Color Color_Tertiary = new Color(26, 23, 18);
 	
-	//TODO ajeitar sistemas de botões: adicionar, e suas posições estão confusas e problematicas!
 	
 	public static void main(String[] args) {
 		FontG.addFont("septem");
@@ -103,6 +104,7 @@ public class Engine implements Runnable {
 		WINDOW = new Window(GameTag + " / The Universe");
 		UI = new UserInterface();
 		ACTIVITY = new Menu();
+		ACTIVITY.enter();
 		ACTIVITY_RUNNING = true;
 		thread = new Thread(ME, "Thread - Game");
 		isRunning = true;
