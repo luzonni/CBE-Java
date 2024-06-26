@@ -29,6 +29,8 @@ public class Engine implements Runnable {
 	
 	public static volatile Engine ME = null;
 	
+	//Teste
+	
 	public volatile Thread thread;
 	public volatile boolean isRunning;
 
