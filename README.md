@@ -1,7 +1,7 @@
-Jogo de estratégia.
+<h1>Jogo de estratégia.</h1>
 
-Conceito do Jogo:
-Em cada nível, você assumirá o controle de um personagem que deve navegar por ambientes complexos e superar obstáculos diversos, usando comandos inteligentes e movendo seu personagem de forma estratégica para prosseguir.
+<h1>Conceito do Jogo:</h1>
+<p>Em cada nível, você assumirá o controle de um personagem que deve navegar por ambientes complexos e superar obstáculos diversos, usando comandos inteligentes e movendo seu personagem de forma estratégica para prosseguir.</p>
 
 <h1>Características Principais:</h1>
 
