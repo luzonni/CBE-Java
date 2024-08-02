@@ -31,7 +31,7 @@ public class Window extends Canvas implements Runnable {
 	private int C_W, C_H;
 	
 	public Window(String name) {
-		createOpenGl(false);
+		createOpenGl(true);
 		//Set's
 		frame = new JFrame(name);
 		initFrame();

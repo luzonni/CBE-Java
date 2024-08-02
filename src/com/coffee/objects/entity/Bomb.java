@@ -65,10 +65,12 @@ public class Bomb extends Entity {
 				entity.die();
 			}
 		}
-		for(int i = 0; i < 1000; i++) {
+		int amount = 0;
+		while(amount < 500) {
 			Point point = new Point((int)(getMiddle().x - radius) + Engine.RAND.nextInt((int)radius*2), (int)(getMiddle().y - radius) + Engine.RAND.nextInt((int)radius*2));
 			if(Geometry.Theta(getMiddle(), point) <= radius) {
 				Game.getLevel().addParticle(new Kabum(point.x, point.y));
+				amount++;
 			}
 		}
 		Game.getLevel().getEntities().remove(this);
